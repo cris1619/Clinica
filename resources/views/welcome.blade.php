@@ -161,10 +161,19 @@
 
             <div class="nav-actions">
                 @auth
-                    <span class="nav-username">{{ auth()->user()->name }}</span>
+                    <span class="nav-username">
+                        {{ auth()->user()->name }}
+                    </span>
+
+                    <a href="{{ route('profile.edit') }}" class="btn-profile">
+                        Actualizar perfil
+                    </a>
+
                     <form action="{{ route('logout') }}" method="POST" style="margin:0">
                         @csrf
-                        <button type="submit" class="btn-logout">Cerrar sesión</button>
+                        <button type="submit" class="btn-logout">
+                            Cerrar sesión
+                        </button>
                     </form>
                 @else
                     <a href="{{ route('login') }}" class="btn-login">

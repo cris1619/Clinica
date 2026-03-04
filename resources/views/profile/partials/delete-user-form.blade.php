@@ -1,55 +1,92 @@
 <section class="space-y-6">
+
     <header>
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            {{ __('Delete Account') }}
+        <h2 class="text-lg font-semibold text-gray-800">
+            Eliminar cuenta
         </h2>
 
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.') }}
+        <p class="mt-1 text-sm text-gray-600">
+            Una vez elimines tu cuenta, todos tus datos serán eliminados permanentemente.
+            Esta acción no se puede deshacer.
         </p>
     </header>
 
-    <x-danger-button
-        x-data=""
-        x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
-    >{{ __('Delete Account') }}</x-danger-button>
+    <button 
+        onclick="openModal()"
+        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow transition">
+        Eliminar cuenta
+    </button>
 
-    <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
-        <form method="post" action="{{ route('profile.destroy') }}" class="p-6">
-            @csrf
-            @method('delete')
+    <!-- Modal -->
+    <div id="modalDelete"
+         class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-opacity">
 
-            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                {{ __('Are you sure you want to delete your account?') }}
+        <div onclick="event.stopPropagation()"
+             class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 transform transition-all">
+
+            <h2 class="text-lg font-semibold text-gray-800 mb-2">
+                Confirmar eliminación
             </h2>
 
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
+            <p class="text-sm text-gray-600 mb-4">
+                Para confirmar esta acción, ingresa tu contraseña.
             </p>
 
-            <div class="mt-6">
-                <x-input-label for="password" value="{{ __('Password') }}" class="sr-only" />
+            <form method="POST" action="{{ route('profile.destroy') }}">
+                @csrf
+                @method('DELETE')
 
-                <x-text-input
-                    id="password"
-                    name="password"
+                <input 
                     type="password"
-                    class="mt-1 block w-3/4"
-                    placeholder="{{ __('Password') }}"
-                />
+                    name="password"
+                    placeholder="Contraseña"
+                    class="w-full border rounded-lg px-3 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-red-500"
+                    required
+                >
 
-                <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
-            </div>
+                @error('password', 'userDeletion')
+                    <p class="text-red-500 text-sm mb-2">{{ $message }}</p>
+                @enderror
 
-            <div class="mt-6 flex justify-end">
-                <x-secondary-button x-on:click="$dispatch('close')">
-                    {{ __('Cancel') }}
-                </x-secondary-button>
+                <div class="flex justify-end gap-3">
+                    <button type="button"
+                        onclick="closeModal()"
+                        class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition">
+                        Cancelar
+                    </button>
 
-                <x-danger-button class="ms-3">
-                    {{ __('Delete Account') }}
-                </x-danger-button>
-            </div>
-        </form>
-    </x-modal>
+                    <button type="submit"
+                        class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+                        Sí, eliminar
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
 </section>
+
+<script>
+function openModal() {
+    const modal = document.getElementById('modalDelete');
+    modal.classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+}
+
+function closeModal() {
+    const modal = document.getElementById('modalDelete');
+    modal.classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+}
+
+// Cerrar al hacer click fuera del cuadro
+document.getElementById('modalDelete')?.addEventListener('click', closeModal);
+
+// Cerrar con tecla ESC
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+        closeModal();
+    }
+});
+</script>
