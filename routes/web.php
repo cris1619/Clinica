@@ -8,6 +8,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware('auth');
+
 Route::get('/dashboard', [UserController::class, 'index'])->middleware(['auth', 
     'verified'])->name('dashboard');
 

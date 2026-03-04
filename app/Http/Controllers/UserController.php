@@ -2,23 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     public function index()
-{
-    if (!Auth::check()) {
-        return redirect()->route('login');
+    {
+        $user = Auth::user();
+
+        $role = $user->roles->first();
+
+        if (!$role) {
+            abort(403, 'No tiene rol asignado');
+        }
+
+        return view($role->nombre . '.dashboard');
     }
-
-    $role = Auth::user()->user_type;
-
-    if (view()->exists("$role.dashboard")) {
-        return view("$role.dashboard");
-    }
-
-    abort(403, 'Rol no autorizado');
-}
 }
