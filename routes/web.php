@@ -8,12 +8,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware('auth');
+Route::get('/dashboard', [UserController::class, 'index'])
+    ->middleware(['auth'])
+    ->name('dashboard');
 
-Route::get('/dashboard', [UserController::class, 'index'])->middleware(['auth', 
-    'verified'])->name('dashboard');
+Route::middleware(['auth', 'role:administrador'])->group(function () {
+    Route::get('/admin', function () {
+        return view('administrador.dashboard');
+    });
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
