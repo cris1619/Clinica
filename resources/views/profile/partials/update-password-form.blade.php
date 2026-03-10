@@ -74,7 +74,7 @@
             <button
                 type="submit"
                 class="bg-blue-500 hover:bg-blue-600 text-black px-5 py-2 rounded-lg shadow transition">
-                Guardar cambios
+                Guardar cambioss
             </button>
 
             @if (session('status') === 'password-updated')
