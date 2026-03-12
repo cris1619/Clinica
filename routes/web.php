@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,4 +25,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+Route::middleware(['auth','role:administrador'])->prefix('admin')->group(function () {
+
+    Route::get('/usuarios', [AdminUserController::class,'index'])->name('usuarios.index');
+    Route::get('/usuarios/create', [AdminUserController::class,'create'])->name('usuarios.create');
+    Route::post('/usuarios', [AdminUserController::class,'store'])->name('usuarios.store');
+    Route::get('/usuarios/{user}/edit', [AdminUserController::class,'edit'])->name('usuarios.edit');
+    Route::put('/usuarios/{user}', [AdminUserController::class,'update'])->name('usuarios.update');
+    Route::delete('/usuarios/{user}', [AdminUserController::class,'destroy'])->name('usuarios.destroy');
+
+});
 require __DIR__.'/auth.php';

@@ -1,8 +1,8 @@
 @extends('layouts.app')
-@section('title', 'Dashboard Administrador')
+@section('title', 'Dashboard Usuario')
 
 @section('content')
-    <h1>Dashboard Administrador</h1>
+    <h1>Dashboard Usuario</h1>
     Nombre: {{ Auth::user()->name }} <br>
     Email: {{ Auth::user()->email }} <br>
     <form action="{{ route('logout') }}" method="POST" style="margin:0">

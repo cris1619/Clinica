@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Dashboard Administrador')
+@section('title', 'Dashboard Profesional')
 
 @section('content')
     <h1>Dashboard Profesional</h1>

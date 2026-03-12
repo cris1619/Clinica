@@ -161,9 +161,9 @@
 
             <div class="nav-actions">
                 @auth
-                    <span class="nav-username">
+                    <a class="nav-username" href="{{ route('dashboard') }}">
                         {{ auth()->user()->name }}
-                    </span>
+                    </a>
 
                     <a href="{{ route('profile.edit') }}" class="btn-profile">
                         Actualizar perfil

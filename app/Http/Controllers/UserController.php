@@ -18,4 +18,6 @@ class UserController extends Controller
 
         return view($role->nombre . '.dashboard');
     }
+
+    
 }
