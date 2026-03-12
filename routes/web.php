@@ -34,6 +34,7 @@ Route::middleware(['auth','role:administrador'])->prefix('admin')->group(functio
     Route::get('/usuarios/{user}/edit', [AdminUserController::class,'edit'])->name('usuarios.edit');
     Route::put('/usuarios/{user}', [AdminUserController::class,'update'])->name('usuarios.update');
     Route::delete('/usuarios/{user}', [AdminUserController::class,'destroy'])->name('usuarios.destroy');
+    
 
 });
 require __DIR__.'/auth.php';

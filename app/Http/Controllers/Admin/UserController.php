@@ -14,13 +14,21 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $usuarios = User::with('roles')->get();
+    public function index(Request $request)
+{
+    $buscar = $request->buscar;
 
-    return view('administrador.usuarios.index', compact('usuarios'));
-    }
+    $usuarios = User::with('roles')
+        ->when($buscar, function ($query, $buscar) {
+            return $query->where('name', 'like', "%$buscar%")
+                         ->orWhere('email', 'like', "%$buscar%");
+        })
+        ->paginate(5);
+        $totalUsuarios = User::count();
 
+
+    return view('administrador.usuarios.index', compact('usuarios','buscar','totalUsuarios'));
+}
     /**
      * Show the form for creating a new resource.
      */
@@ -98,8 +106,20 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
+ public function destroy(User $user)
+{
+    if ($user->id === auth()->id()) {
+    return back()->with('error','No puedes eliminar tu propio usuario');
+}
+    // verificar si el usuario es administrador
+    if ($user->roles->first()->nombre === 'administrador') {
+        return redirect()->route('usuarios.index')
+            ->with('error', 'No se puede eliminar un usuario administrador');
     }
+
+    $user->delete();
+
+    return redirect()->route('usuarios.index')
+        ->with('success', 'Usuario eliminado correctamente');
+}
 }

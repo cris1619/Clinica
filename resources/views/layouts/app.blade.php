@@ -201,6 +201,49 @@
     <main>
         @yield('content')
     </main>
+@if(session('success') || session('error') || session('warning') || session('info'))
 
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+let icon = "";
+let message = "";
+
+@if(session('success'))
+    icon = "success";
+    message = "{{ session('success') }}";
+@endif
+
+@if(session('error'))
+    icon = "error";
+    message = "{{ session('error') }}";
+@endif
+
+@if(session('warning'))
+    icon = "warning";
+    message = "{{ session('warning') }}";
+@endif
+
+@if(session('info'))
+    icon = "info";
+    message = "{{ session('info') }}";
+@endif
+
+Swal.fire({
+    toast: true,
+    position: 'top-end',
+    icon: icon,
+    title: message,
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true
+});
+
+});
+
+</script>
+
+@endif
 </body>
 </html>
