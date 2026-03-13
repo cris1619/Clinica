@@ -25,9 +25,10 @@ class UserController extends Controller
         })
         ->paginate(5);
         $totalUsuarios = User::count();
+        $roles = Role::all();
 
 
-    return view('administrador.usuarios.index', compact('usuarios','buscar','totalUsuarios'));
+    return view('administrador.usuarios.index', compact('usuarios','buscar','totalUsuarios','roles'));
 }
     /**
      * Show the form for creating a new resource.
@@ -121,5 +122,16 @@ class UserController extends Controller
 
     return redirect()->route('usuarios.index')
         ->with('success', 'Usuario eliminado correctamente');
+}
+public function updateRol(Request $request, User $user)
+{
+    $request->validate([
+        'rol_id' => 'required|exists:roles,id'
+    ]);
+
+    $user->roles()->sync([$request->rol_id]);
+
+    return redirect()->route('usuarios.index')
+        ->with('success','Rol actualizado correctamente');
 }
 }
