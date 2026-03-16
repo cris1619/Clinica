@@ -12,10 +12,31 @@
 
     <br>
 
-    <a href="{{ route('usuarios.index') }}" 
-        class="bg-blue-500 text-black px-4 py-2 rounded">
-        Administrar usuarios
-    </a>
+
+    <div class="grid grid-cols-3 gap-6">
+
+<a href="{{ route('usuarios.index') }}"
+class="bg-purple-500 text-white p-6 rounded-lg">
+
+Usuarios
+
+</a>
+
+<a href="{{ route('pacientes.index') }}"
+class="bg-blue-500 text-white p-6 rounded-lg">
+
+Pacientes
+
+</a>
+
+<a href="{{ route('citas.index') }}"
+class="bg-green-500 text-white p-6 rounded-lg">
+
+Citas
+
+</a>
+
+</div>
 
 @endsection
 

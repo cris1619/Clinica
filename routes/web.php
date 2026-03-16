@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\PacienteController;
+use App\Http\Controllers\Admin\CitaController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -35,7 +37,24 @@ Route::middleware(['auth','role:administrador'])->prefix('admin')->group(functio
     Route::put('/usuarios/{user}', [AdminUserController::class,'update'])->name('usuarios.update');
     Route::delete('/usuarios/{user}', [AdminUserController::class,'destroy'])->name('usuarios.destroy');
     Route::put('/usuarios/{user}/rol', [AdminUserController::class,'updateRol'])->name('usuarios.updateRol');
-    
-
 });
+
+Route::middleware(['auth','role:administrador,agente'])
+->prefix('admin')
+->group(function () {
+
+    Route::resource('pacientes', PacienteController::class);
+    Route::get('pacientes-trash',[PacienteController::class,'trash'])
+->name('pacientes.trash');
+
+Route::put('pacientes-restore/{id}',[PacienteController::class,'restore'])
+->name('pacientes.restore');
+
+Route::delete('pacientes-force-delete/{id}',[PacienteController::class,'forceDelete'])
+->name('pacientes.forceDelete');
+
+    Route::resource('citas', CitaController::class);
+
+}); 
+
 require __DIR__.'/auth.php';

@@ -18,6 +18,13 @@ class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
 
 </a>
 
+<a href="{{ route('dashboard') }}"
+class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+
+Volver
+
+</a>
+
 </div>
 
 <div class="grid grid-cols-3 gap-4 mb-6">
