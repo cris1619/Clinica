@@ -88,43 +88,20 @@ class="border-t hover:bg-gray-50">
 <td class="p-3">{{ $user->email }}</td>
 
 <td class="p-3">
-<span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs">
+
 @php
-$rol = $user->roles->first()->nombre ?? 'sin rol';
+$rol = $user->roles->first();
 @endphp
 
-@if($rol == 'administrador')
+<button
+type="button"
+onclick="openRoleModal({{ $user->id }}, {{ $rol->id ?? 0 }})"
+class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-semibold hover:bg-blue-200">
 
-<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-xs font-semibold">
-Administrador
-</span>
+{{ $rol->nombre ?? 'Sin rol' }}
 
-@elseif($rol == 'profesional')
+</button>
 
-<span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-semibold">
-Profesional
-</span>
-
-@elseif($rol == 'agente')
-
-<span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-semibold">
-Agente
-</span>
-
-@elseif($rol == 'usuario')
-
-<span class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs font-semibold">
-Usuario
-</span>
-
-@else
-
-<span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">
-Sin rol
-</span>
-
-@endif
-</span>
 </td>
 
 <td class="p-3 flex gap-2">
@@ -164,7 +141,59 @@ Eliminar
 </div>
 
 </div>
+<!-- MODAL CAMBIAR ROL -->
 
+<div id="roleModal"
+class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
+
+<div class="bg-white p-6 rounded-lg shadow-lg w-96">
+
+<h2 class="text-lg font-bold mb-4">
+Cambiar rol
+</h2>
+
+<form id="roleForm" method="POST">
+
+@csrf
+@method('PUT')
+
+<select name="rol_id" id="rolSelect"
+class="w-full border rounded p-2 mb-4">
+
+@foreach($roles as $role)
+
+<option value="{{ $role->id }}">
+{{ $role->nombre }}
+</option>
+
+@endforeach
+
+</select>
+
+<div class="flex justify-end gap-2">
+
+<button type="button"
+onclick="closeRoleModal()"
+class="bg-gray-200 px-4 py-2 rounded">
+
+Cancelar
+
+</button>
+
+<button type="submit"
+class="bg-blue-500 text-white px-4 py-2 rounded">
+
+Guardar
+
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
 @endsection
 <script>
 
@@ -186,6 +215,29 @@ Swal.fire({
     }
 
 })
+
+}
+function openRoleModal(userId, rolId){
+
+let modal = document.getElementById('roleModal');
+let form = document.getElementById('roleForm');
+let select = document.getElementById('rolSelect');
+
+form.action = "/admin/usuarios/" + userId + "/rol";
+
+select.value = rolId;
+
+modal.classList.remove('hidden');
+modal.classList.add('flex');
+
+}
+
+function closeRoleModal(){
+
+let modal = document.getElementById('roleModal');
+
+modal.classList.remove('flex');
+modal.classList.add('hidden');
 
 }
 

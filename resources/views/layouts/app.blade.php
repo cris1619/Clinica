@@ -156,7 +156,7 @@
                         <path d="M2 12l10 5 10-5"/>
                     </svg>
                 </div>
-                <span class="nav-logo-text">Clinica</span>
+                <span class="nav-logo">Clinica</span>
             </a>
 
             <div class="nav-actions">
@@ -246,4 +246,14 @@ Swal.fire({
 
 @endif
 </body>
+    <!-- FOOTER -->
+@section('footer')
+<footer class="mt-16 text-center text-sm text-gray-500">
+
+<p>
+© {{ date('Y') }} Centro Oftalmológico Virgilio Galvis – Foscal Internacional <br>
+Desarrollado por Karen Sepulveda – Todos los derechos reservados.
+</p>
+
+</footer>
 </html>
